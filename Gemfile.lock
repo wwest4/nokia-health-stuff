@@ -1,0 +1,15 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    activesupport-inflector (0.1.0)
+    fileutils (1.0.2)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  activesupport-inflector
+  fileutils
+
+BUNDLED WITH
+   1.15.4
