@@ -146,13 +146,14 @@ end.parse!
 
 # FitbitWeight
 
-def flush(queue, dir, klass, index)
+def flush!(queue, dir, klass, index)
   FileUtils.mkdir_p dir
   filename = "#{dir}/#{klass.name}.#{index}.csv"
   puts "#{filename}"
   File.open(filename, 'w+') do |f|
     queue.each { |line| f.puts(line) }
   end
+  queue.delete_if { true }
 end
 
 output_class = options[:output_format].to_s.camelize.constantize
@@ -164,11 +165,10 @@ for file in Dir["#{options[:input_dir]}*"] do
     output_entry = output_class.from_body_entry(body_entry)
     queue << output_entry.to_csv
     if queue.length == output_class::BATCH_SIZE
-      flush(queue, options[:output_dir], output_class, index)
+      flush!(queue, options[:output_dir], output_class, index)
       index += 1
-      queue = []
     end
   end
 end
 # flush queue remainder
-flush(queue, options[:output_dir], output_class, index)
+flush!(queue, options[:output_dir], output_class, index)
